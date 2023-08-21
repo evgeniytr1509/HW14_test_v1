@@ -11,6 +11,12 @@ async def get_todos(limit: int, offset: int, db: AsyncSession, user: User):
     return todos.scalars().all()
 
 
+async def get_all_todos(limit: int, offset: int, db: AsyncSession):
+    sq = select(Todo).offset(offset).limit(limit)
+    todos = await db.execute(sq)
+    return todos.scalars().all()
+
+
 async def get_todo(todo_id: int, db: AsyncSession, user: User):
     sq = select(Todo).filter_by(id=todo_id, user=user)
     todo = await db.execute(sq)
